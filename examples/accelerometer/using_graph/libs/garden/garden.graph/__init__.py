@@ -157,16 +157,16 @@ class Graph(Widget):
                 # differently if the last incomplete decade has a decade
                 # boundary in it
                 if floor(s_min + n_decades) != floor(s_max):
-                    n_decades += 1 - (10 ** (s_min + n_decades + 1) - 10 **
-                                      s_max) / 10 ** floor(s_max + 1)
+                    n_decades += 1 - (10 ** (s_min + n_decades + 1) - 10
+                                      ** s_max) / 10 ** floor(s_max + 1)
                 else:
-                    n_decades += ((10 ** s_max - 10 ** (s_min + n_decades)) /
-                                  10 ** floor(s_max + 1))
+                    n_decades += ((10 ** s_max - 10 ** (s_min + n_decades))
+                                  / 10 ** floor(s_max + 1))
                 # this might be larger than what is needed, but we delete
                 # excess later
                 n_ticks_major = n_decades / float(major)
-                n_ticks = int(floor(n_ticks_major * (minor if minor >=
-                                                     1. else 1.0))) + 2
+                n_ticks = int(floor(n_ticks_major * (minor if minor
+                                                     >= 1. else 1.0))) + 2
                 # in decade multiples, e.g. 0.1 of the decade, the distance
                 # between ticks
                 decade_dist = major / float(minor if minor else 1.0)
@@ -182,8 +182,8 @@ class Graph(Widget):
                 # first real tick location. value is in fractions of decades
                 # from the start we have to use decimals here, otherwise
                 # floating point inaccuracies results in bad values
-                start_dec = ceil((10 ** Decimal(s_min - s_min_low - 1)) /
-                                 Decimal(decade_dist)) * decade_dist
+                start_dec = ceil((10 ** Decimal(s_min - s_min_low - 1))
+                                 / Decimal(decade_dist)) * decade_dist
                 count_min = (0 if not minor else
                              floor(start_dec / decade_dist) % minor)
                 start_dec += s_min_low
@@ -213,13 +213,14 @@ class Graph(Widget):
                             points_minor[k2] = pos_log
                             k2 += 1
                     count_min += 1
-                #n_ticks = len(points)
+                # n_ticks = len(points)
             else:
                 # distance between each tick
                 tick_dist = major / float(minor if minor else 1.0)
                 n_ticks = int(floor((s_max - s_min) / tick_dist) + 1)
-                points_major = [0] * int(floor((s_max - s_min) / float(major))
-                                         + 1)
+                points_major = [0] * int(
+                    floor((s_max - s_min) / float(major)) + 1
+                )
                 points_minor = [0] * (n_ticks - len(points_major) + 1)
                 k = 0  # position in points major
                 k2 = 0  # position in points minor
@@ -280,9 +281,10 @@ class Graph(Widget):
             ylabels[0].text = precision % ypoints[0]
             ylabels[0].texture_update()
             y1 = ylabels[0].texture_size
-            y_start = y_next + (padding + y1[1] if len(xlabels) and xlabel_grid
-                                else 0) +\
-                                (padding + y1[1] if not y_next else 0)
+            y_start = y_next + (
+                padding + y1[1]
+                if len(xlabels) and xlabel_grid else 0
+            ) + (padding + y1[1] if not y_next else 0)
             yextent = y + height - padding - y1[1] / 2.
             if self.ylog:
                 ymax = log10(ymax)
@@ -296,8 +298,8 @@ class Graph(Widget):
                 ylabels[k].texture_update()
                 ylabels[k].size = ylabels[k].texture_size
                 y1 = max(y1, ylabels[k].texture_size[0])
-                ylabels[k].pos = (x_next, y_start + (ypoints[k] - ymin) *
-                                  ratio)
+                ylabels[k].pos = (x_next, y_start + (ypoints[k] - ymin)
+                                  * ratio)
             if len(ylabels) > 1 and ylabels[0].top > ylabels[1].y:
                 y_overlap = True
             else:
@@ -322,8 +324,8 @@ class Graph(Widget):
                 # update the size so we can center the labels on ticks
                 xlabels[k].texture_update()
                 xlabels[k].size = xlabels[k].texture_size
-                xlabels[k].pos = (x_next + (xpoints[k] - xmin) * ratio -
-                                  xlabels[k].texture_size[0] / 2., y_next)
+                xlabels[k].pos = (x_next + (xpoints[k] - xmin) * ratio
+                                  - xlabels[k].texture_size[0] / 2., y_next)
                 if xlabels[k].x < right:
                     x_overlap = True
                     break
@@ -477,8 +479,8 @@ class Graph(Widget):
             self.add_widget(grids[k])
 
         mesh = self._mesh
-        n_points = (len(xpoints_major) + len(xpoints_minor) +
-                    len(ypoints_major) + len(ypoints_minor))
+        n_points = (len(xpoints_major) + len(xpoints_minor)
+                    + len(ypoints_major) + len(ypoints_minor))
         mesh.vertices = [0] * (n_points * 8)
         mesh.indices = [k for k in xrange(n_points * 2)]
         self._redraw_size()
@@ -834,11 +836,12 @@ class MeshLinePlot(Plot):
     [].
     '''
 
+
 class MeshStemPlot(MeshLinePlot):
     '''MeshStemPlot uses the MeshLinePlot class to draw a stem plot. The data
     provided is graphed from origin to the data point.
     '''
-    
+
     def _redraw(self, *args):
         points = self.points
         mesh = self._mesh

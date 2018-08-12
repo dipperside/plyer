@@ -23,10 +23,15 @@ To send an e-mail::
 
     >>> # opens email interface where user can change the content.
 
+Supported Platforms
+-------------------
+Android, iOS, Windows, OS X, Linux
+
 '''
 
 
 class Email(object):
+    # pylint: disable=too-few-public-methods
     '''
     Email facade.
     '''

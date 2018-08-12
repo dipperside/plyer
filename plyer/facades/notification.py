@@ -15,16 +15,22 @@ To send notification::
     >>> message = 'This is an example.'
     >>> notification.notify(title=title, message=message)
 
+Supported Platforms
+-------------------
+Android, Windows, OS X, Linux
+
 '''
 
 
 class Notification(object):
+    # pylint: disable=too-few-public-methods
     '''
     Notification facade.
     '''
 
     def notify(self, title='', message='', app_name='', app_icon='',
                timeout=10, ticker=''):
+        # pylint: disable=too-many-arguments
         '''
         Send a notification.
 

@@ -1,0 +1,51 @@
+version: 1.0.{build}
+clone_depth: 1
+clone_folder: c:\projects\app
+
+environment:
+  matrix:
+  - PY: 27
+  - PY: 36
+  - STYLE: 1
+
+install:
+- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1'))
+
+
+build_script:
+    - cmd:
+        if "%PY%"=="27" (
+            set PYTHON=C:\Python27\python.exe
+        ) else (
+            set PYTHON=C:\Python36\python.exe
+        )
+
+        cd C:\projects\app
+
+        set PYTHONPATH=%PYTHONPATH%;%cd%
+
+        %PYTHON% -m pip install --requirement devrequirements.txt
+
+        %PYTHON% -m pip install .
+
+        echo Plyer version is
+
+        %PYTHON% -c "import plyer;print(plyer.__version__)"
+
+        if "%STYLE%"=="1" (
+            %PYTHON% -m pycodestyle "%cd%"
+                --exclude=pep8.py,compat.py,utils.py
+                --ignore=E402,W503
+            &&
+            echo off > "%cd%\__init__.py" && echo on &&
+            %PYTHON% -m pylint --disable=R0205 "%cd%"
+            &&
+            exit 0
+        )
+
+        %PYTHON% -m nose.core
+            --stop
+            --nocapture
+            --with-coverage
+            --cover-package=plyer
+            %cd%\plyer\tests
